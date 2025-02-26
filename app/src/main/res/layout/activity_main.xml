@@ -20,12 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Weather App"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
         android:textColor="@color/white"
         android:textSize="50sp"
-        android:textStyle="bold"
-    />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/cityName"
@@ -39,17 +38,28 @@
         android:textColorHint="@color/black"
         android:textColor="@color/black"
         android:textSize="30sp"
-        android:textAlignment="center"
-        />
+        android:textAlignment="center" />
 
     <Button
-        android:layout_width="100dp"
+        android:id="@+id/button"
+        android:layout_width="110dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/cityName"
         android:layout_marginTop="20dp"
         android:text="Check"
         android:backgroundTint="#2196F3"
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/weatherInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/button"
+        android:layout_marginTop="100dp"
+        android:textSize="30sp"
+        android:background="#FFFFFF"
         />
+
 </RelativeLayout>
