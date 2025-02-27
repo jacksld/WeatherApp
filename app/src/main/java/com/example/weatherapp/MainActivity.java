@@ -28,17 +28,52 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
     TextView cityName;
     Button button;
-    TextView weatherInfo;
+    TextView show;
     String url;
 
-    class getWeather extends AsyncTask<String, void, String> {
+    class getWeather extends AsyncTask<String, Void, String> {
         @Override
-        protected String doInBackground(String... url) {
+        protected String doInBackground(String... urls) {
             StringBuilder result = new StringBuilder();
             try {
                 URL url = new URL(urls[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                BufferedReader reader =  new BufferedReader(new InputStreamReader(inputStream));
+
+                String line="";
+                while ((line = reader.readLine()) != null) {
+                    result.append(line).append("\n");
+                }
+                return result.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                String weatherInfo = jsonObject.getString("main");
+                weatherInfo =  weatherInfo.replace("temp", "Temperature");
+                weatherInfo =  weatherInfo.replace("humidity", "Humidity");
+                weatherInfo =  weatherInfo.replace("pressure", "Pressure");
+                weatherInfo = weatherInfo.replace("temp_min", "Lowest temperature");
+                weatherInfo = weatherInfo.replace("temp_max", "Highest temperature");
+                weatherInfo = weatherInfo.replace("feels_like", "Feels like");
+                weatherInfo = weatherInfo.replace("sea_level", "Sea level");
+                weatherInfo = weatherInfo.replace("grnd_level", "Ground level");
+                weatherInfo = weatherInfo.replace("{", "");
+                weatherInfo = weatherInfo.replace("}", "");
+                weatherInfo = weatherInfo.replace(",", "\n");
+                weatherInfo = weatherInfo.replace(":", " : ");
+                show.setText(weatherInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -55,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }); */
         cityName = findViewById(R.id.cityName);
         button = findViewById(R.id.button);
-        weatherInfo = findViewById(R.id.weatherInfo);
+        show = findViewById(R.id.weatherInfo);
 
         final String[] temp={""};
 
@@ -66,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 String city = cityName.getText().toString();
                 try {
                     if (city != null) {
-                        url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=5c6d80e979d05fd4cd517d6753af8e45";
+                        url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=";
                     } else {
                         Toast.makeText(MainActivity.this, "Please enter a city name", Toast.LENGTH_SHORT).show();
                     }
@@ -80,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                 if (temp == null) {
                     show.setText("Unable to find weather");
                 }
-
 
             }
         });
