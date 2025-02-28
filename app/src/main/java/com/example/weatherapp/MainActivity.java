@@ -94,26 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
         final String[] temp={""};
 
-        button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Button clicked", Toast.LENGTH_SHORT).show();
+            public void onClick(View v){
+                Toast.makeText(MainActivity.this, "Button Clicked! ", Toast.LENGTH_SHORT).show();
                 String city = cityName.getText().toString();
-                try {
-                    if (city != null) {
-                        url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=";
-                    } else {
-                        Toast.makeText(MainActivity.this, "Please enter a city name", Toast.LENGTH_SHORT).show();
+                try{
+                    if(city!=null){
+                        url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=5c6d80e979d05fd4cd517d6753af8e45";
+                    }else{
+                        Toast.makeText(MainActivity.this, "Enter City", Toast.LENGTH_SHORT).show();
                     }
-                    getWeather task = new getWeather();
+                    getWeather task= new getWeather();
                     temp[0] = task.execute(url).get();
-                } catch(ExecutionException e) {
+                }catch(ExecutionException e){
                     e.printStackTrace();
-                } catch(InterruptedException e) {
+                }catch(InterruptedException e){
                     e.printStackTrace();
                 }
-                if (temp == null) {
-                    show.setText("Unable to find weather");
+                if(temp[0] == null){
+                    show.setText("Cannot able to find Weather");
                 }
 
             }
